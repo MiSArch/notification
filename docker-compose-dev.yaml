@@ -1,0 +1,27 @@
+services:
+  notification-db:
+    extends:
+      file: docker-compose-base.yaml
+      service: notification-db
+    ports:
+      - 5432:5432
+  notification:
+    extends:
+      file: docker-compose-base.yaml
+      service: notification
+    ports:
+      - 8080:8080
+  notification-dapr:
+    extends:
+      file: docker-compose-base.yaml
+      service: notification-dapr
+    volumes:
+      - "./.dapr/dapr-config-minimal.yaml:/config.yaml"
+      - "./.dapr/components:/components"
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+volumes:
+  notification-db-data:
