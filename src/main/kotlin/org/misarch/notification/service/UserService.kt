@@ -1,5 +1,6 @@
 package org.misarch.notification.service
 
+import kotlinx.coroutines.reactor.awaitSingle
 import org.misarch.notification.event.model.UserDTO
 import org.misarch.notification.persistence.model.UserEntity
 import org.misarch.notification.persistence.repository.UserRepository
@@ -24,7 +25,7 @@ class UserService(
         val user = UserEntity(
             id = userDTO.id
         )
-        repository.save(user)
+        repository.save(user).awaitSingle()
     }
 
 }
