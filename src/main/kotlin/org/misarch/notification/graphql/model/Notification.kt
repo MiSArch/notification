@@ -27,7 +27,7 @@ class Notification(
     @GraphQLDescription("Whether the notification has been read")
     val isRead get() = dateRead != null
 
-    @GraphQLDescription("The user this notificatin was sent to.")
+    @GraphQLDescription("The user this notification was sent to.")
     fun user(
         dfe: DataFetchingEnvironment
     ): CompletableFuture<User> {
