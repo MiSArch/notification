@@ -1,5 +1,6 @@
 package org.misarch.notification.event.model
 
+import org.misarch.notification.graphql.input.NotificationInput
 import java.util.UUID
 
 /**
@@ -10,7 +11,7 @@ import java.util.UUID
  * @property userId id of the user the notification was sent to
  */
 data class NotificationDTO(
-    val title: String,
-    val body: String,
-    val userId: UUID,
-)
+    override val title: String,
+    override val body: String,
+    override val userId: UUID,
+) : NotificationInput
