@@ -22,10 +22,7 @@ class UserService(
      * @param userDTO the user to register
      */
     suspend fun registerUser(userDTO: UserDTO) {
-        val user = UserEntity(
-            id = userDTO.id
-        )
-        repository.save(user).awaitSingle()
+        repository.createUser(userDTO.id)
     }
 
 }

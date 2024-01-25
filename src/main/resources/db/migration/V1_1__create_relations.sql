@@ -9,7 +9,7 @@ CREATE TABLE NotificationEntity (
     dateSent TIMESTAMPTZ NOT NULL,
     dateRead TIMESTAMPTZ,
     title VARCHAR(255) NOT NULL,
-    message TEXT NOT NULL,
+    body TEXT NOT NULL,
     userId UUID NOT NULL,
     FOREIGN KEY (userId) REFERENCES UserEntity(id)
 );
