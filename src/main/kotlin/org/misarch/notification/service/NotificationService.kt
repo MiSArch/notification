@@ -1,6 +1,7 @@
 package org.misarch.notification.service
 
 import kotlinx.coroutines.reactor.awaitSingle
+import org.misarch.notification.graphql.AuthorizedUser
 import org.misarch.notification.graphql.input.NotificationInput
 import org.misarch.notification.graphql.input.UpdateNotificationInput
 import org.misarch.notification.persistence.model.NotificationEntity
@@ -47,10 +48,14 @@ class NotificationService(
      * Updates a notification
      *
      * @param input defines which notification to update and how
+     * @param authorizedUser the user making the request
      * @return the updated notification
      */
-    suspend fun updateNotification(input: UpdateNotificationInput): NotificationEntity {
+    suspend fun updateNotification(input: UpdateNotificationInput, authorizedUser: AuthorizedUser): NotificationEntity {
         val notification = repository.findById(input.id).awaitSingle()
+        if (notification.userId != authorizedUser.id) {
+            authorizedUser.checkIsAdmin()
+        }
         if ((notification.dateRead != null) != input.isRead) {
             notification.dateRead = if (input.isRead) {
                 OffsetDateTime.now()

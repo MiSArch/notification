@@ -26,7 +26,13 @@ class Query(
         id: UUID,
         dfe: DataFetchingEnvironment
     ): CompletableFuture<Notification> {
-        return dfe.getDataLoader<UUID, Notification>(NotificationDataLoader::class.simpleName!!).load(id)
+        return dfe.getDataLoader<UUID, Notification>(NotificationDataLoader::class.simpleName!!).load(id).thenApply {
+            val authorizedUser = dfe.authorizedUser
+            if (it.userId != authorizedUser.id) {
+                authorizedUser.checkIsEmployee()
+            }
+            it
+        }
     }
 
 }
