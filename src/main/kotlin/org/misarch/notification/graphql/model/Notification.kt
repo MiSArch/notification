@@ -21,7 +21,7 @@ class Notification(
     val dateSent: OffsetDateTime,
     @property:GraphQLDescription("The date the notification was read")
     val dateRead: OffsetDateTime?,
-    private val userId: UUID
+    internal val userId: UUID
 ) : Node(id) {
 
     @GraphQLDescription("Whether the notification has been read")

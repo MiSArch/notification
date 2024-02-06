@@ -4,6 +4,9 @@ import com.expediagroup.graphql.generator.annotations.GraphQLDescription
 import com.expediagroup.graphql.generator.annotations.GraphQLIgnore
 import com.expediagroup.graphql.generator.federation.directives.FieldSet
 import com.expediagroup.graphql.generator.federation.directives.KeyDirective
+import graphql.schema.DataFetchingEnvironment
+import org.misarch.notification.graphql.authorizedUser
+import org.misarch.notification.graphql.authorizedUserOrNull
 import org.misarch.notification.graphql.model.connection.NotificationConnection
 import org.misarch.notification.graphql.model.connection.NotificationOrder
 import org.misarch.notification.persistence.model.NotificationEntity
@@ -27,10 +30,14 @@ class User(
         orderBy: NotificationOrder? = null,
         @GraphQLIgnore
         @Autowired
-        productVariantRepository: NotificationRepository
+        productVariantRepository: NotificationRepository,
+        dfe: DataFetchingEnvironment
     ): NotificationConnection {
+        if (dfe.authorizedUser.id != id) {
+            dfe.authorizedUser.checkIsEmployee()
+        }
         return NotificationConnection(
-            first, skip, NotificationEntity.ENTITY.userId.eq(id), orderBy, productVariantRepository
+            first, skip, NotificationEntity.ENTITY.userId.eq(id), orderBy, productVariantRepository, dfe.authorizedUserOrNull
         )
     }
 
