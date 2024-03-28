@@ -29,7 +29,11 @@ jobs:
         run: |
           chmod +x ./scripts/generate-graphql-schema.sh
           ./scripts/generate-graphql-schema.sh
-      - uses: peter-evans/create-pull-request@v5
+      - uses: misarch/graphql-schema-transform@v1
+        with:
+          schema: schemas/notification.graphql
+          target: schemas/notification.graphql
+      - uses: peter-evans/create-pull-request@v6
         with:
           path: ./schemas
           commit-message: Update notification schema
